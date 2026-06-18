@@ -1,5 +1,6 @@
-import { Bell, Menu, Moon, Shield, Sun } from "lucide-react";
+import { Bell, LogOut, Menu, Moon, Shield, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { useNotifications } from "../../context/NotificationContext";
 import { useTheme } from "../../context/ThemeContext";
 import { ROUTES } from "../../utils/constants";
@@ -8,6 +9,7 @@ import Button from "../common/Button";
 export default function Navbar({ onMenuClick }) {
   const { unreadCount } = useNotifications();
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const { logout, role, user } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/60 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70">
@@ -25,6 +27,9 @@ export default function Navbar({ onMenuClick }) {
         </div>
 
         <div className="flex items-center gap-2">
+          <div className="hidden rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-xs font-bold capitalize text-slate-600 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-300 sm:block">
+            {user?.name} · {role}
+          </div>
           <Button variant="ghost" className="px-3" onClick={toggleDarkMode} aria-label="Toggle theme">
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
@@ -40,6 +45,9 @@ export default function Navbar({ onMenuClick }) {
               </span>
             )}
           </Link>
+          <Button variant="ghost" className="px-3" onClick={logout} aria-label="Sign out">
+            <LogOut className="h-5 w-5" />
+          </Button>
         </div>
       </div>
     </header>

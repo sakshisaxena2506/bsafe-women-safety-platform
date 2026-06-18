@@ -6,7 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import { getInitials } from "../utils/formatters";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { updateProfile, user } = useAuth();
+  const [isSaving, setIsSaving] = useState(false);
   const [values, setValues] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -17,6 +18,17 @@ export default function ProfilePage() {
   function handleChange(event) {
     const { name, value } = event.target;
     setValues((current) => ({ ...current, [name]: value }));
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setIsSaving(true);
+
+    try {
+      await updateProfile(values);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -34,12 +46,12 @@ export default function ProfilePage() {
 
       <Card>
         <h2 className="text-xl font-bold text-slate-950 dark:text-white">Edit profile</h2>
-        <form className="mt-5 grid gap-4 sm:grid-cols-2">
+        <form className="mt-5 grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
           <Input label="Name" name="name" value={values.name} onChange={handleChange} />
           <Input label="Email" name="email" type="email" value={values.email} onChange={handleChange} />
           <Input label="Phone" name="phone" value={values.phone} onChange={handleChange} />
           <Input className="sm:col-span-2" label="Address" name="address" value={values.address} onChange={handleChange} />
-          <Button className="sm:col-span-2">Save profile</Button>
+          <Button type="submit" className="sm:col-span-2" isLoading={isSaving}>Save profile</Button>
         </form>
       </Card>
     </div>

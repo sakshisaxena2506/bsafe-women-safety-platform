@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
 import AuthLayout from "./components/layout/AuthLayout";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import ContactsPage from "./pages/ContactsPage";
 import Dashboard from "./pages/Dashboard";
@@ -29,17 +30,29 @@ export default function App() {
         <Route path={ROUTES.forgotPassword} element={<ForgotPassword />} />
       </Route>
 
-      <Route element={<AppLayout />}>
-        <Route path={ROUTES.dashboard} element={<Dashboard />} />
-        <Route path={ROUTES.sos} element={<SOSPage />} />
-        <Route path={ROUTES.contacts} element={<ContactsPage />} />
-        <Route path={ROUTES.safeZones} element={<SafeZonesPage />} />
-        <Route path={ROUTES.history} element={<IncidentHistory />} />
-        <Route path={ROUTES.volunteer} element={<VolunteerDashboard />} />
-        <Route path={ROUTES.admin} element={<AdminDashboard />} />
-        <Route path={ROUTES.profile} element={<ProfilePage />} />
-        <Route path={ROUTES.notifications} element={<NotificationsPage />} />
-        <Route path={ROUTES.settings} element={<SettingsPage />} />
+      <Route element={<ProtectedRoute allowedRoles={["user", "volunteer", "admin"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path={ROUTES.dashboard} element={<Dashboard />} />
+          <Route path={ROUTES.sos} element={<SOSPage />} />
+          <Route path={ROUTES.contacts} element={<ContactsPage />} />
+          <Route path={ROUTES.safeZones} element={<SafeZonesPage />} />
+          <Route path={ROUTES.history} element={<IncidentHistory />} />
+          <Route path={ROUTES.profile} element={<ProfilePage />} />
+          <Route path={ROUTES.notifications} element={<NotificationsPage />} />
+          <Route path={ROUTES.settings} element={<SettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route element={<ProtectedRoute allowedRoles={["volunteer", "admin"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path={ROUTES.volunteer} element={<VolunteerDashboard />} />
+        </Route>
+      </Route>
+
+      <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path={ROUTES.admin} element={<AdminDashboard />} />
+        </Route>
       </Route>
 
       <Route path="/home" element={<Navigate to={ROUTES.dashboard} replace />} />

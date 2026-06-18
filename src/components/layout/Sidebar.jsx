@@ -12,23 +12,27 @@ import {
   X
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { ROUTES } from "../../utils/constants";
 import Button from "../common/Button";
 
 const navItems = [
-  { label: "Dashboard", path: ROUTES.dashboard, icon: Home },
-  { label: "SOS Center", path: ROUTES.sos, icon: ShieldAlert },
-  { label: "Contacts", path: ROUTES.contacts, icon: Contact },
-  { label: "Safe Zones", path: ROUTES.safeZones, icon: MapPin },
-  { label: "Incidents", path: ROUTES.history, icon: History },
-  { label: "Volunteer", path: ROUTES.volunteer, icon: LifeBuoy },
-  { label: "Admin", path: ROUTES.admin, icon: Users },
-  { label: "Profile", path: ROUTES.profile, icon: User },
-  { label: "Notifications", path: ROUTES.notifications, icon: Bell },
-  { label: "Settings", path: ROUTES.settings, icon: Settings }
+  { label: "Dashboard", path: ROUTES.dashboard, icon: Home, roles: ["user", "volunteer", "admin"] },
+  { label: "SOS Center", path: ROUTES.sos, icon: ShieldAlert, roles: ["user", "volunteer", "admin"] },
+  { label: "Contacts", path: ROUTES.contacts, icon: Contact, roles: ["user", "volunteer", "admin"] },
+  { label: "Safe Zones", path: ROUTES.safeZones, icon: MapPin, roles: ["user", "volunteer", "admin"] },
+  { label: "Incidents", path: ROUTES.history, icon: History, roles: ["user", "volunteer", "admin"] },
+  { label: "Volunteer", path: ROUTES.volunteer, icon: LifeBuoy, roles: ["volunteer", "admin"] },
+  { label: "Admin", path: ROUTES.admin, icon: Users, roles: ["admin"] },
+  { label: "Profile", path: ROUTES.profile, icon: User, roles: ["user", "volunteer", "admin"] },
+  { label: "Notifications", path: ROUTES.notifications, icon: Bell, roles: ["user", "volunteer", "admin"] },
+  { label: "Settings", path: ROUTES.settings, icon: Settings, roles: ["user", "volunteer", "admin"] }
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
+  const { role } = useAuth();
+  const availableItems = navItems.filter((item) => item.roles.includes(role));
+
   return (
     <>
       <div
@@ -50,7 +54,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </div>
 
         <nav className="space-y-1">
-          {navItems.map((item) => {
+          {availableItems.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink

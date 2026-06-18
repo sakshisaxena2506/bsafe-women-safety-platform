@@ -10,7 +10,10 @@ import { validateRegister } from "../utils/validators";
 export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
-  const form = useForm({ name: "", email: "", mobile: "", password: "", confirmPassword: "" }, validateRegister);
+  const form = useForm(
+    { name: "", email: "", mobile: "", password: "", confirmPassword: "", role: "user" },
+    validateRegister
+  );
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -30,6 +33,19 @@ export default function Register() {
         <Input label="Mobile number" name="mobile" value={form.values.mobile} onChange={form.handleChange} error={form.errors.mobile} />
         <Input label="Password" name="password" type="password" value={form.values.password} onChange={form.handleChange} error={form.errors.password} />
         <Input label="Confirm password" name="confirmPassword" type="password" value={form.values.confirmPassword} onChange={form.handleChange} error={form.errors.confirmPassword} />
+        <label className="sm:col-span-2 block">
+          <span className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">Account role</span>
+          <select
+            name="role"
+            value={form.values.role}
+            onChange={form.handleChange}
+            className="min-h-12 w-full rounded-xl border border-slate-200 bg-white/85 px-4 text-sm text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+          >
+            <option value="user">User</option>
+            <option value="volunteer">Volunteer</option>
+            <option value="admin">Admin</option>
+          </select>
+        </label>
         <Button type="submit" className="sm:col-span-2" isLoading={form.isSubmitting}>Create account</Button>
       </form>
       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">

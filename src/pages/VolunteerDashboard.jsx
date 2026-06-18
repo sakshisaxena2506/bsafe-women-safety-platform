@@ -1,11 +1,33 @@
 import { CheckCircle2, Clock, LifeBuoy, Route } from "lucide-react";
+import toast from "react-hot-toast";
 import Card from "../components/common/Card";
 import RequestCard from "../components/volunteer/RequestCard";
 import StatCard from "../components/dashboard/StatCard";
+import { useSafety } from "../context/SafetyContext";
 import { nearbyRequests, volunteers } from "../data/volunteers";
 
 export default function VolunteerDashboard() {
+  const { alerts, updateResponderStatus } = useSafety();
   const completedCases = volunteers.reduce((total, volunteer) => total + volunteer.completedCases, 0);
+  const activeAlertRequests = alerts
+    .filter((alert) => alert.status === "active" || alert.status === "pending")
+    .map((alert) => ({
+      id: alert.id,
+      title: `${alert.severity} SOS near ${alert.location}`,
+      distance: "Live route",
+      severity: alert.severity,
+      eta: "5 min"
+    }));
+  const requests = [...activeAlertRequests, ...nearbyRequests];
+
+  function handleStatusChange(id, status) {
+    if (id.startsWith("REQ-")) {
+      toast.success(`Nearby request marked as ${status}.`);
+      return;
+    }
+
+    updateResponderStatus(id, status);
+  }
 
   return (
     <div className="space-y-6">
@@ -28,8 +50,14 @@ export default function VolunteerDashboard() {
         <Card>
           <h2 className="text-xl font-bold text-slate-950 dark:text-white">Nearby requests</h2>
           <div className="mt-4 grid gap-3">
-            {nearbyRequests.map((request) => (
-              <RequestCard key={request.id} request={request} />
+            {requests.map((request) => (
+              <RequestCard
+                key={request.id}
+                request={request}
+                onAccept={(id) => handleStatusChange(id, "accepted")}
+                onDecline={(id) => handleStatusChange(id, "pending")}
+                onComplete={(id) => handleStatusChange(id, "completed")}
+              />
             ))}
           </div>
         </Card>

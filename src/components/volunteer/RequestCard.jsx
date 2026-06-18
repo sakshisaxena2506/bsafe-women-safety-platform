@@ -2,7 +2,7 @@ import { Clock, MapPin } from "lucide-react";
 import Badge from "../common/Badge";
 import Button from "../common/Button";
 
-export default function RequestCard({ request }) {
+export default function RequestCard({ request, onAccept, onDecline, onComplete }) {
   return (
     <article className="rounded-2xl border border-slate-200 bg-white/80 p-4 dark:border-slate-800 dark:bg-slate-900/80">
       <div className="flex items-start justify-between gap-3">
@@ -22,8 +22,13 @@ export default function RequestCard({ request }) {
         <Badge tone={request.severity}>{request.severity}</Badge>
       </div>
       <div className="mt-4 flex gap-2">
-        <Button className="flex-1">Accept</Button>
-        <Button variant="secondary" className="flex-1">Decline</Button>
+        <Button className="flex-1" onClick={() => onAccept?.(request.id)}>Accept</Button>
+        <Button variant="secondary" className="flex-1" onClick={() => onDecline?.(request.id)}>Decline</Button>
+        {onComplete && (
+          <Button variant="ghost" className="flex-1" onClick={() => onComplete(request.id)}>
+            Complete
+          </Button>
+        )}
       </div>
     </article>
   );
