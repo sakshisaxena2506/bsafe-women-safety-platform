@@ -17,10 +17,12 @@ function createMarker(color, label) {
         background: ${color};
         border: 4px solid white;
         box-shadow: 0 10px 25px rgba(16,32,39,0.22);
-      ">${label}</div>
+      ">
+        ${label}
+      </div>
     `,
     iconSize: [34, 34],
-    iconAnchor: [17, 17]
+    iconAnchor: [17, 17],
   });
 }
 
@@ -33,28 +35,45 @@ function safeZoneCoordinates(index) {
     [12.9412, 77.6227],
     [12.9288, 77.6289],
     [12.9341, 77.6112],
-    [12.9454, 77.6376]
+    [12.9454, 77.6376],
   ];
 
   return base[index % base.length];
 }
 
-export default function SafetyMap({ center, safeZones = [], alerts = [], className = "" }) {
+export default function SafetyMap({
+  center,
+  safeZones = [],
+  alerts = [],
+  className = "",
+}) {
   const resolvedCenter = [center.lat, center.lng];
 
   return (
     <div className={className}>
-      <MapContainer center={resolvedCenter} zoom={14} scrollWheelZoom={false}>
+      <MapContainer
+        center={resolvedCenter}
+        zoom={14}
+        scrollWheelZoom={false}
+        style={{ height: "400px", width: "100%" }}
+      >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          attribution='&copy; OpenStreetMap contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* User Location */}
         <Marker position={resolvedCenter} icon={userIcon}>
           <Popup>Your current live location</Popup>
         </Marker>
 
+        {/* Safe Zones */}
         {safeZones.map((zone, index) => (
-          <Marker key={zone.id} position={safeZoneCoordinates(index)} icon={safeZoneIcon}>
+          <Marker
+            key={zone.id || `zone-${index}`}
+            position={safeZoneCoordinates(index)}
+            icon={safeZoneIcon}
+          >
             <Popup>
               <strong>{zone.name}</strong>
               <br />
@@ -63,13 +82,18 @@ export default function SafetyMap({ center, safeZones = [], alerts = [], classNa
           </Marker>
         ))}
 
+        {/* Alerts */}
         {alerts
           .filter((alert) => alert.coordinates?.lat && alert.coordinates?.lng)
           .slice(0, 4)
-          .map((alert) => (
-            <Marker key={alert.id} position={[alert.coordinates.lat, alert.coordinates.lng]} icon={alertIcon}>
+          .map((alert, index) => (
+            <Marker
+              key={alert.id || `alert-${index}`}
+              position={[alert.coordinates.lat, alert.coordinates.lng]}
+              icon={alertIcon}
+            >
               <Popup>
-                <strong>{alert.severity} alert</strong>
+                <strong>{alert.severity} Alert</strong>
                 <br />
                 {alert.location}
               </Popup>

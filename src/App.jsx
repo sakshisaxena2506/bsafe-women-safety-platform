@@ -7,7 +7,7 @@ import ContactsPage from "./pages/ContactsPage";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import IncidentHistory from "./pages/IncidentHistory";
-import LandingPage from "./pages/LandingPage";
+ 
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import NotificationsPage from "./pages/NotificationsPage";
@@ -22,7 +22,7 @@ import { ROUTES } from "./utils/constants";
 export default function App() {
   return (
     <Routes>
-      <Route path={ROUTES.landing} element={<LandingPage />} />
+       <Route path="/" element={<Navigate to={ROUTES.login} replace />} />
 
       <Route element={<AuthLayout />}>
         <Route path={ROUTES.login} element={<Login />} />

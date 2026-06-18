@@ -11,7 +11,11 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
-  const form = useForm({ email: "ananya.sharma@example.com", password: "secure123", remember: true }, validateLogin);
+  const form = useForm({
+  email: "",
+  password: "",
+  remember: true
+}, validateLogin);
   const from = location.state?.from?.pathname || ROUTES.dashboard;
 
   async function handleSubmit(event) {
@@ -26,8 +30,15 @@ export default function Login() {
 
   return (
     <Card className="w-full max-w-md">
-      <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white">Welcome back</h1>
-      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Sign in to manage your safety profile and alerts.</p>
+      <div className="flex justify-center mb-4">
+  <img
+    src="/logo.png"
+    alt="bSafe Logo"
+    className="h-20"
+  />
+</div>
+       <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white"> Welcome to bSafe</h1>
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Your safety is our priority. Sign in to access emergency assistance and live protection services. </p>
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" value={form.values.email} onChange={form.handleChange} error={form.errors.email} />
         <Input label="Password" name="password" type="password" value={form.values.password} onChange={form.handleChange} error={form.errors.password} />
@@ -40,13 +51,7 @@ export default function Login() {
         </div>
         <Button type="submit" className="w-full" isLoading={form.isSubmitting}>Sign in</Button>
       </form>
-      <div className="mt-5 rounded-2xl bg-brand-50 p-4 text-sm text-slate-700 dark:bg-brand-500/10 dark:text-slate-200">
-        <p className="font-bold">Demo roles</p>
-        <p className="mt-1">User: ananya.sharma@example.com</p>
-        <p>Volunteer: asha.volunteer@example.com</p>
-        <p>Admin: admin@bsafe.app</p>
-        <p className="mt-1 text-slate-500 dark:text-slate-400">Use any password with six or more characters when Supabase is not configured.</p>
-      </div>
+  
       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
         New to bSafe? <Link to={ROUTES.register} className="font-bold text-brand-700 dark:text-brand-100">Create account</Link>
       </p>
