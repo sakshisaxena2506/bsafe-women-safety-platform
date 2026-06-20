@@ -22,7 +22,11 @@ export async function getProfile(userId) {
     return null;
   }
 
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
+  const { data, error } = await supabase
+  .from("profiles")
+  .select("*")
+  .eq("id", userId)
+  .maybeSingle();
   const normalizedError = normalizeSupabaseError(error);
 
   if (normalizedError) {
