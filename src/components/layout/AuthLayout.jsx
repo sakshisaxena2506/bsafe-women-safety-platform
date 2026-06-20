@@ -27,11 +27,11 @@ export default function AuthLayout() {
               Your Safety Matters. Help Is Always One Tap Away. 
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-8 text-slate-600 dark:text-slate-300">
-              bSafe empowers women with instant SOS alerts, live location sharing, emergency contacts and a trusted volunteer network. 
+                
             </p>
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Supabase-ready authentication structure included.
+          
           </p>
         </div>
       </section>

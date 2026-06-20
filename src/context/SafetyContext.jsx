@@ -54,6 +54,10 @@ export function SafetyProvider({ children }) {
     async function loadSafetyWorkspace() {
       setIsSafetyLoading(true);
       setSafetyError("");
+      if (!user?.id) {
+      setIsSafetyLoading(false);
+      return;
+     }
 
       try {
         const [nextContacts, nextAlerts, nextSafeZones] = await Promise.all([

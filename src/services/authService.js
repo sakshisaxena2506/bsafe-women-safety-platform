@@ -1,4 +1,4 @@
-import { demoAccounts } from "../data/users";
+ import { demoAccounts } from "../data/users";
 import { upsertProfile } from "./databaseService";
 import { supabase } from "./supabaseClient";
 

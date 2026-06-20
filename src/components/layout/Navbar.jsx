@@ -5,6 +5,7 @@ import { useNotifications } from "../../context/NotificationContext";
 import { useTheme } from "../../context/ThemeContext";
 import { ROUTES } from "../../utils/constants";
 import Button from "../common/Button";
+ 
 
 export default function Navbar({ onMenuClick }) {
   const { unreadCount } = useNotifications();
@@ -18,12 +19,17 @@ export default function Navbar({ onMenuClick }) {
           <Button variant="ghost" className="px-2 lg:hidden" onClick={onMenuClick} aria-label="Open sidebar">
             <Menu className="h-5 w-5" />
           </Button>
-          <Link to={ROUTES.dashboard} className="flex items-center gap-2 font-extrabold text-slate-950 dark:text-white">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-roseguard-500 to-brand-500 text-white">
-              <Shield className="h-5 w-5" />
-            </span>
-            bSafe
-          </Link>
+           <Link
+  to={ROUTES.dashboard}
+  className="flex items-center gap-3 font-extrabold text-slate-950 dark:text-white"
+>
+   <img
+  src="/bsafeLogo.png"
+  alt="bSafe Logo"
+  className="h-14 w-14 rounded-xl object-cover"
+/>
+   
+</Link>
         </div>
 
         <div className="flex items-center gap-2">

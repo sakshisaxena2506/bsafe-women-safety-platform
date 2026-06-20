@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useForm } from "../hooks/useForm";
 import { ROUTES } from "../utils/constants";
 import { validateLogin } from "../utils/validators";
+ 
 
 export default function Login() {
   const navigate = useNavigate();
@@ -30,13 +31,15 @@ export default function Login() {
 
   return (
     <Card className="w-full max-w-md">
-      <div className="flex justify-center mb-4">
-  <img
-    src="/logo.png"
-    alt="bSafe Logo"
-    className="h-20"
-  />
-</div>
+      <div className="flex flex-col items-center mb-6">
+        
+        <img
+  src="/bsafeLogo.png"
+  alt="bSafe Logo"
+  className="h-34 w-34 object-contain"
+/>
+         
+      </div>
        <h1 className="text-3xl font-extrabold text-slate-950 dark:text-white"> Welcome to bSafe</h1>
       <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Your safety is our priority. Sign in to access emergency assistance and live protection services. </p>
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
